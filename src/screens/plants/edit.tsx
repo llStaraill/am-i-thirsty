@@ -1,20 +1,21 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View } from "react-native";
 import { Button, TextInput, Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PlantListCard } from "../../components";
+import { PlantContext } from "../../context/plantContext";
 import { addPlant, fetchPlants, openDatabase } from "../../lib/data/db";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 
 type EditScreenProps = NativeStackScreenProps<PlantStackNavigatorProps, "Edit">;
 
-const db = openDatabase();
-
 const EditScreen = () => {
   const [name, setName] = useState<string>("");
   const [species, setSpecies] = useState<string>("");
+
+  const { db } = useContext(PlantContext);
 
   const handlePlantSave = () => {
     try {

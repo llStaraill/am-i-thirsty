@@ -1,22 +1,46 @@
-import React, { createContext, useEffect } from "react";
-import * as SQLite from "expo-sqlite";
+import React, { useEffect, createContext, useState } from "react";
+import { database } from "../lib/data/db";
 import { Plant } from "../lib/data/model/plants";
-import { openDatabase } from "../lib/data/db";
+
+const addNewPlant = (plant: Plant) => {
+  return database.insertPlant(plant);
+};
 
 interface PlantContextProps {
-  db: SQLite.WebSQLDatabase;
+  plants: Plant[];
+  addNewPlant: (plant: Plant) => void;
 }
 
-const db = openDatabase();
+export const PlantContext = createContext<PlantContextProps>({
+  plants: [],
+  addNewPlant,
+});
 
-const PlantContext = createContext<PlantContextProps>({ db });
+interface PlantContextProviderProps {
+  children: any;
+}
 
-const PlantProvider = (props: any) => {
+export const PlantContextProvider = ({
+  children,
+}: PlantContextProviderProps) => {
+  const [plants, setPlants] = useState<Plant[]>([]);
+
+  useEffect(() => {
+    refreshPlants();
+  }, []);
+
+  const refreshPlants = () => {
+    return database.getPlants(setPlants);
+  };
+
+  const plantContext = {
+    plants,
+    addNewPlant,
+  };
+
   return (
-    <PlantContext.Provider value={{ db: db }}>
-      {props.children}
+    <PlantContext.Provider value={plantContext}>
+      {children}
     </PlantContext.Provider>
   );
 };
-
-export { PlantProvider, PlantContext };

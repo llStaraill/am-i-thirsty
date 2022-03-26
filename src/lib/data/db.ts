@@ -3,53 +3,83 @@ import { Plant } from "./model/plants";
 
 const tableName = "plantData";
 
-export function openDatabase() {
-  const db = SQLite.openDatabase("db.db");
-  return db;
-}
+const db = SQLite.openDatabase("db.db");
 
-export const createTable = async (db: SQLite.WebSQLDatabase) => {
-  // create table if not exists
-  const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
-          value TEXT NOT NULL
-      );`;
-
-  await db.transaction((tx) => tx.executeSql(query));
-};
-
-export const fetchPlants = (db: SQLite.WebSQLDatabase): Plant[] => {
-  try {
-    const plants: Plant[] = [];
-
+const dropDatabase = async () => {
+  return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        `SELECT rowid as id,value FROM ${tableName}`,
-        undefined,
-        (_, { rows: { _array } }) => _array.map((entry) => plants.push(entry))
-      );
-    });
-
-    return plants;
-  } catch (error) {
-    console.error(error);
-    throw Error("Failed to get PlantData !!!");
-  }
-};
-
-export const addPlant = (db: SQLite.WebSQLDatabase, plant: Plant) => {
-  try {
-    db.transaction((tx) => {
-      tx.executeSql(
-        `INSERT OR REPLACE INTO ${tableName} (rowid, name, species) values (?, ?, ?)`,
-        [plant.id, plant.name, plant.species]
-      );
-      tx.executeSql(
-        `SELECT rowid as id, value FROM ${tableName}`,
+        `DROP table ${tableName}`,
         [],
-        (_, { rows }) => console.log(JSON.stringify(rows))
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          console.log("error dropping users table");
+          reject(error);
+          return false;
+        }
       );
     });
-  } catch (error) {
-    console.error(error);
-  }
+  });
+};
+
+const setupDatabase = async () => {
+  // create table if not exists
+  const query = `CREATE TABLE IF NOT EXISTS ${tableName}id integer primary key not null, name text, species text);`;
+
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(query),
+        [],
+        (_: any, error: unknown) => {
+          console.log("db error creating tables");
+          console.log(error);
+          reject(error);
+          return false;
+        },
+        (_: any, success: unknown) => {
+          resolve(success);
+        };
+    });
+  });
+};
+
+const getPlants = (
+  setPlants: React.Dispatch<React.SetStateAction<Plant[]>>
+) => {
+  const query = `SELECT * from ${tableName}`;
+  db.transaction((tx) => {
+    tx.executeSql(query, [], (_, { rows: { _array } }) => setPlants(_array));
+  });
+};
+
+const insertPlant = (plant: Plant) => {
+  const query = `INSERT into ${tableName} (id, name, species) values (?,?,?)`;
+  db.transaction((tx) => {
+    tx.executeSql(
+      query,
+      [plant.id, plant.name, plant.species],
+      (_: any, error: unknown) => {
+        console.log("db error creating tables");
+        console.log(error);
+        return false;
+      }
+    );
+  });
+};
+
+const deletePlant = (id: string) => {
+  const query = `DELETE from ${tableName} where id = ${id}`;
+  db.transaction((tx) => {
+    tx.executeSql(query);
+  });
+};
+
+export const database = {
+  getPlants,
+  insertPlant,
+  deletePlant,
+  setupDatabase,
+  dropDatabase,
 };

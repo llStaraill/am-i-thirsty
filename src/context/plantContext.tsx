@@ -2,13 +2,13 @@ import React, { useEffect, createContext, useState } from "react";
 import { database } from "../lib/data/db";
 import { Plant } from "../lib/data/model/plants";
 
-const addNewPlant = (plant: Plant) => {
-  return database.insertPlant(plant);
+const addNewPlant = (plant: Plant, successCallback: () => void) => {
+  return database.insertPlant(plant, successCallback);
 };
 
 interface PlantContextProps {
   plants: Plant[];
-  addNewPlant: (plant: Plant) => void;
+  addNewPlant: (plant: Plant, successCallback: () => void) => void;
 }
 
 export const PlantContext = createContext<PlantContextProps>({
@@ -26,12 +26,11 @@ export const PlantContextProvider = ({
   const [plants, setPlants] = useState<Plant[]>([]);
 
   useEffect(() => {
+    console.log("refreshing");
     refreshPlants();
   }, []);
 
-  const refreshPlants = () => {
-    return database.getPlants(setPlants);
-  };
+  const refreshPlants = () => database.getPlants(setPlants);
 
   const plantContext = {
     plants,

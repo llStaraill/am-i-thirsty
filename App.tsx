@@ -17,14 +17,14 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <PlantContextProvider>
-        <PaperProvider>
-          <NavigationContainer>
+      <PaperProvider>
+        <NavigationContainer>
+          <PlantContextProvider>
             <RootNavigator />
             <StatusBar />
-          </NavigationContainer>
-        </PaperProvider>
-      </PlantContextProvider>
+          </PlantContextProvider>
+        </NavigationContainer>
+      </PaperProvider>
     </SafeAreaProvider>
   );
 }

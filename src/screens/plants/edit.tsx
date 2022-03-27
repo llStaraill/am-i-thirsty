@@ -8,24 +8,36 @@ import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 
 type EditScreenProps = NativeStackScreenProps<PlantStackNavigatorProps, "Edit">;
 
-const EditScreen = () => {
+const getId = (plants: Plant[]) => {
+  let id = 0;
+  if (plants.length > 0) {
+    id =
+      plants.reduce((acc, cur) => {
+        if (cur.id > acc.id) return cur;
+        return acc;
+      }).id + 1;
+  }
+  return id;
+};
+
+const EditScreen = ({ navigation }: EditScreenProps) => {
   const [name, setName] = useState<string>("");
   const [species, setSpecies] = useState<string>("");
 
   const { plants, addNewPlant } = useContext(PlantContext);
 
+  const redirectOnSuccess = () => {
+    return navigation.navigate("List");
+  };
+
   const handlePlantSave = () => {
     const newPlant: Plant = {
-      id:
-        plants.reduce((acc, cur) => {
-          if (cur.id > acc.id) return cur;
-          return acc;
-        }).id + 1,
+      id: getId(plants),
       name,
       species,
     };
 
-    addNewPlant(newPlant);
+    addNewPlant(newPlant, redirectOnSuccess);
   };
 
   return (
@@ -34,11 +46,13 @@ const EditScreen = () => {
       <TextInput
         label="Name"
         autoComplete={false}
+        value={name}
         onChangeText={(text) => setName(text)}
       ></TextInput>
       <TextInput
         label="Species"
         autoComplete={false}
+        value={species}
         onChangeText={(text) => setSpecies(text)}
       ></TextInput>
       <Button

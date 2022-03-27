@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FlatList, ListRenderItem, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
+  Button,
   Card,
   FAB,
   List,
@@ -30,17 +31,19 @@ const ListScreen = observer(({ navigation }: ListScreenProps) => {
   const renderPlants = ({ item: { id, name, species } }: any) => {
     console.log;
     return (
-      <Surface key={id} style={{ flex: 1, margin: 5 }}>
-        <Card onPress={() => navigation.navigate("Detail", { id })}>
-          <Card.Cover
-            style={{ flexShrink: 1, maxHeight: "auto" }}
-            source={{ uri: `https://picsum.photos/700?random=${id}` }}
-            height={100}
-            width={100}
-            resizeMode={"cover"}
-          />
-        </Card>
-      </Surface>
+      <Card
+        key={id}
+        style={{ flex: 1, margin: 5 }}
+        onPress={() => navigation.navigate("Detail", { id })}
+      >
+        <Card.Cover
+          style={{ flexShrink: 1, maxHeight: "auto" }}
+          source={{ uri: `https://picsum.photos/700?random=${id}` }}
+          height={100}
+          width={100}
+          resizeMode={"cover"}
+        />
+      </Card>
     );
   };
 

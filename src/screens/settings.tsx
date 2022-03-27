@@ -1,19 +1,21 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { Divider } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PlantHeader from "../components/layout/plantHeader";
 
 import { RootTabNavigatorProps } from "../navigators/rootNavigator";
+import { settingScreenStyling } from "../styles/screens.ts";
 
-type SettingScreenProps = NativeStackScreenProps<
+export type SettingScreenProps = NativeStackScreenProps<
   RootTabNavigatorProps,
   "Settings"
 >;
 
-const SettingScreen = ({ navigation }: SettingScreenProps) => {
+const SettingScreen = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={settingScreenStyling.containerWrapper}>
       <Text>Lemon</Text>
       <Divider />
       <Text>Mango</Text>

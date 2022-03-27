@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { View, DeviceEventEmitter } from "react-native";
+import { SafeAreaView, DeviceEventEmitter } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -14,6 +14,7 @@ import { usePlantStore } from "../../context/plantContext";
 import { database } from "../../lib/data/db";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
+import { detailScreenStyling } from "../../styles/screens.ts";
 
 export type DetailScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -46,22 +47,18 @@ const DetailScreen = ({ route, navigation }: DetailScreenProps) => {
     setDialogVisibility(true);
   };
 
-  const hideDialog = () => {
-    setDialogVisibility(false);
-  };
-
   DeviceEventEmitter.addListener("deleteIconClicked", handleDeleteClicked);
 
   return (
     <>
-      <View>
+      <SafeAreaView style={detailScreenStyling.containerWrapper}>
         {!plant || loading ? (
           <ActivityIndicator animating={true} />
         ) : (
           <>
             <Text>{`The profile of the beautiful ${plant.name} a very handsome ${plant.species}`}</Text>
             <Portal>
-              <Dialog visible={dialogVisibility} onDismiss={hideDialog}>
+              <Dialog visible={dialogVisibility}>
                 <Dialog.Title>
                   <Text>This is a title</Text>
                 </Dialog.Title>
@@ -78,7 +75,7 @@ const DetailScreen = ({ route, navigation }: DetailScreenProps) => {
             </Portal>
           </>
         )}
-      </View>
+      </SafeAreaView>
     </>
   );
 };

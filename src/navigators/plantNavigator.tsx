@@ -28,15 +28,7 @@ const PlantNavigator = ({ route, navigation }: PlantNavigatorProps) => {
         <Stack.Screen
           name="List"
           component={ListScreen}
-          options={({ route, navigation }) => ({
-            header: () => (
-              <PlantHeader
-                navigatorProps={{ route, navigation }}
-                title={route.name}
-                subtitle={"99 lil buds in the pot"}
-              />
-            ),
-          })}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Detail"
@@ -60,11 +52,10 @@ const PlantNavigator = ({ route, navigation }: PlantNavigatorProps) => {
             header: () => (
               <PlantHeader
                 navigatorProps={{ route, navigation }}
-                title={route.name}
-                subtitle={
+                title={
                   route.params.setting === "Edit"
                     ? "Edit Plant"
-                    : "Create new Plant"
+                    : "Create a new Plant"
                 }
               />
             ),

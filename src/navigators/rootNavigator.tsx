@@ -1,8 +1,6 @@
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import React from "react";
-import { View, Text } from "react-native";
-import { Button, FAB, Portal } from "react-native-paper";
-import { PlantListCard } from "../components";
+import PlantHeader from "../components/layout/plantHeader";
 import { SettingScreen } from "../screens";
 import PlantNavigator from "./plantNavigator";
 
@@ -15,24 +13,35 @@ const Tab = createMaterialBottomTabNavigator<RootTabNavigatorProps>();
 
 const RootNavigator = () => {
   return (
-    <Tab.Navigator
-      initialRouteName="Plants"
-      shifting={true}
-      backBehavior="initialRoute"
-      sceneAnimationEnabled={false}
-    >
-      <Tab.Screen
-        name="Plants"
-        component={PlantNavigator}
-        options={{ tabBarIcon: "flower" }}
-        initialParams={{ initialRouteName: "List" }}
+    <>
+      <PlantHeader
+        title="Am I thirsty ?"
+        subtitle="99 little buds in the pot"
+        hideBackAction
       />
-      <Tab.Screen
-        name="Settings"
-        component={SettingScreen}
-        options={{ tabBarIcon: "cog" }}
-      />
-    </Tab.Navigator>
+      <Tab.Navigator
+        initialRouteName="Plants"
+        shifting={true}
+        backBehavior="initialRoute"
+        sceneAnimationEnabled={false}
+      >
+        <Tab.Screen
+          name="Plants"
+          component={PlantNavigator}
+          options={() => ({
+            tabBarIcon: "flower",
+          })}
+          initialParams={{ initialRouteName: "List" }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingScreen}
+          options={() => ({
+            tabBarIcon: "cog",
+          })}
+        />
+      </Tab.Navigator>
+    </>
   );
 };
 

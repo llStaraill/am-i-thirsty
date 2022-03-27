@@ -8,6 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { usePlantStore } from "../../context/plantContext";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
+import { listScreenStyling } from "../../styles/screens.ts";
 
 export type ListScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -18,7 +19,7 @@ const ListScreen = observer(({ navigation }: ListScreenProps) => {
   const { plants } = usePlantStore();
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, ...listScreenStyling.containerWrapper }}>
       <ScrollView>
         <Title>I am a List</Title>
         <List.Section>
@@ -35,7 +36,7 @@ const ListScreen = observer(({ navigation }: ListScreenProps) => {
 
       <FAB
         icon="plus"
-        style={{ position: "absolute", bottom: 75, right: 16 }}
+        style={{ position: "absolute", bottom: 25, right: 16 }}
         onPress={() =>
           navigation.navigate("Edit", { setting: "Add", id: undefined })
         }

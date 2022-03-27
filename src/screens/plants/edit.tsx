@@ -8,6 +8,7 @@ import PlantHeader from "../../components/layout/plantHeader";
 import { usePlantStore } from "../../context/plantContext";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
+import { editScreenStyling } from "../../styles/screens.ts";
 
 export type EditScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -48,7 +49,7 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={editScreenStyling.containerWrapper}>
       <Title>Edit Plant</Title>
       <TextInput
         label="Name"

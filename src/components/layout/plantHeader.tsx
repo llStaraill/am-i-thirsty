@@ -6,13 +6,15 @@ import { PlantNavigatorProps } from "../../navigators/plantNavigator";
 import { DetailScreenProps } from "../../screens/plants/detail";
 import { EditScreenProps } from "../../screens/plants/edit";
 import { ListScreenProps } from "../../screens/plants/list";
+import { SettingScreenProps } from "../../screens/settings";
 
 interface PlantHeaderProps<T> {
-  navigatorProps: T;
+  navigatorProps?: T;
   title: string;
   subtitle?: string;
   showDelete?: boolean;
   showEdit?: boolean;
+  hideBackAction?: boolean;
 }
 
 const PlantHeader = ({
@@ -20,9 +22,14 @@ const PlantHeader = ({
   subtitle,
   showDelete = false,
   showEdit = false,
-  navigatorProps: { navigation },
+  hideBackAction = false,
+  navigatorProps,
 }: PlantHeaderProps<
-  DetailScreenProps | PlantNavigatorProps | EditScreenProps | ListScreenProps
+  | DetailScreenProps
+  | PlantNavigatorProps
+  | EditScreenProps
+  | ListScreenProps
+  | SettingScreenProps
 >) => {
   const handleDeleteClicked = () => {
     DeviceEventEmitter.emit("deleteIconClicked");
@@ -33,7 +40,9 @@ const PlantHeader = ({
   };
   return (
     <Appbar.Header>
-      <Appbar.BackAction onPress={() => navigation.goBack()} />
+      {!hideBackAction && navigatorProps && (
+        <Appbar.BackAction onPress={() => navigatorProps.navigation.goBack()} />
+      )}
       <Appbar.Content title={title} subtitle={subtitle} />
       {showEdit && (
         <Appbar.Action icon="pencil" onPress={() => handleEditClicked()} />

@@ -12,6 +12,7 @@ class PlantStore {
       addNewPlant: action.bound,
       fetchPlants: action.bound,
       setPlants: action.bound,
+      deletePlant: action.bound,
     });
 
     this.fetchPlants();
@@ -20,12 +21,18 @@ class PlantStore {
   setPlants = (plantResult: Plant[]) => {
     this.plants = [...plantResult];
   };
+
   async fetchPlants() {
     await database.getPlants(this.setPlants);
   }
 
   addNewPlant(newPlant: Plant, successCallback: () => void) {
     database.insertPlant(newPlant, successCallback);
+    this.fetchPlants();
+  }
+
+  deletePlant(id: number, successCallback: () => void) {
+    database.deletePlant(id, successCallback);
     this.fetchPlants();
   }
 }

@@ -4,11 +4,15 @@ import React, { useState } from "react";
 import { DeviceEventEmitter } from "react-native";
 import { Button, TextInput, Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PlantHeader from "../../components/layout/plantHeader";
 import { usePlantStore } from "../../context/plantContext";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 
-type EditScreenProps = NativeStackScreenProps<PlantStackNavigatorProps, "Edit">;
+export type EditScreenProps = NativeStackScreenProps<
+  PlantStackNavigatorProps,
+  "Edit"
+>;
 
 const getId = (plants: Plant[]) => {
   let id = 0;
@@ -22,7 +26,7 @@ const getId = (plants: Plant[]) => {
   return id;
 };
 
-const EditScreen = observer(({ navigation }: EditScreenProps) => {
+const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
   const [name, setName] = useState<string>("");
   const [species, setSpecies] = useState<string>("");
 

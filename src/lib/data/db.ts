@@ -78,11 +78,18 @@ const insertPlant = (plant: Plant, successCallback: () => void) => {
   );
 };
 
-const deletePlant = (id: string) => {
+const deletePlant = (id: number, successCallback: () => void) => {
   const query = `DELETE from ${tableName} where id = ${id}`;
-  db.transaction((tx) => {
-    tx.executeSql(query);
-  });
+  db.transaction(
+    (tx) => {
+      tx.executeSql(query);
+    },
+    (error: SQLError) => {
+      console.log("Failed to insert new Plant");
+      console.log(error);
+    },
+    () => successCallback()
+  );
 };
 
 const getPlantById = (id: number, setPlants: (plants: Plant) => void) => {

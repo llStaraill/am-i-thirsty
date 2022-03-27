@@ -9,7 +9,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { usePlantStore } from "../../context/plantContext";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 
-type ListScreenProps = NativeStackScreenProps<PlantStackNavigatorProps, "List">;
+export type ListScreenProps = NativeStackScreenProps<
+  PlantStackNavigatorProps,
+  "List"
+>;
 
 const ListScreen = observer(({ navigation }: ListScreenProps) => {
   const { plants } = usePlantStore();
@@ -29,13 +32,14 @@ const ListScreen = observer(({ navigation }: ListScreenProps) => {
           ))}
         </List.Section>
       </ScrollView>
-      <Portal>
-        <FAB
-          icon="plus"
-          style={{ position: "absolute", bottom: 75, right: 16 }}
-          onPress={() => navigation.navigate("Edit", { setting: "Add" })}
-        />
-      </Portal>
+
+      <FAB
+        icon="plus"
+        style={{ position: "absolute", bottom: 75, right: 16 }}
+        onPress={() =>
+          navigation.navigate("Edit", { setting: "Add", id: undefined })
+        }
+      />
     </SafeAreaView>
   );
 });

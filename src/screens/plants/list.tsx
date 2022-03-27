@@ -36,6 +36,9 @@ const ListScreen = observer(({ navigation }: ListScreenProps) => {
         style={{ flex: 1, margin: 5 }}
         onPress={() => navigation.navigate("Detail", { id })}
       >
+        <Card.Content>
+          <Title>{name}</Title>
+        </Card.Content>
         <Card.Cover
           style={{ flexShrink: 1, maxHeight: "auto" }}
           source={{ uri: `https://picsum.photos/700?random=${id}` }}

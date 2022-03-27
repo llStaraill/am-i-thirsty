@@ -20,6 +20,7 @@ const RootNavigator = () => {
         hideBackAction
       />
       <Tab.Navigator
+        screenOptions={() => ({ tabBarColor: "#00897b" })}
         initialRouteName="Plants"
         shifting={true}
         backBehavior="initialRoute"

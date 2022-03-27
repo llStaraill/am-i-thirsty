@@ -64,6 +64,7 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
         onChangeText={(text) => setSpecies(text)}
       ></TextInput>
       <Button
+        mode="contained"
         disabled={name === "" && species === ""}
         onPress={() => handlePlantSave()}
       >

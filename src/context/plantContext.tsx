@@ -1,45 +1,35 @@
-import React, { useEffect, createContext, useState } from "react";
+import { action, makeObservable, observable } from "mobx";
+import React, { createContext, useContext } from "react";
 import { database } from "../lib/data/db";
 import { Plant } from "../lib/data/model/plants";
 
-const addNewPlant = (plant: Plant, successCallback: () => void) => {
-  return database.insertPlant(plant, successCallback);
-};
+class PlantStore {
+  plants: Plant[] = [];
 
-interface PlantContextProps {
-  plants: Plant[];
-  addNewPlant: (plant: Plant, successCallback: () => void) => void;
-}
+  constructor() {
+    makeObservable(this, {
+      plants: observable,
+      addNewPlant: action.bound,
+      fetchPlants: action.bound,
+      setPlants: action.bound,
+    });
 
-export const PlantContext = createContext<PlantContextProps>({
-  plants: [],
-  addNewPlant,
-});
+    this.fetchPlants();
+  }
 
-interface PlantContextProviderProps {
-  children: any;
-}
-
-export const PlantContextProvider = ({
-  children,
-}: PlantContextProviderProps) => {
-  const [plants, setPlants] = useState<Plant[]>([]);
-
-  useEffect(() => {
-    console.log("refreshing");
-    refreshPlants();
-  }, []);
-
-  const refreshPlants = () => database.getPlants(setPlants);
-
-  const plantContext = {
-    plants,
-    addNewPlant,
+  setPlants = (plantResult: Plant[]) => {
+    this.plants = [...plantResult];
   };
+  async fetchPlants() {
+    await database.getPlants(this.setPlants);
+  }
 
-  return (
-    <PlantContext.Provider value={plantContext}>
-      {children}
-    </PlantContext.Provider>
-  );
-};
+  addNewPlant(newPlant: Plant, successCallback: () => void) {
+    database.insertPlant(newPlant, successCallback);
+    this.fetchPlants();
+  }
+}
+
+const plantStore = new PlantStore();
+export const PlantStoreContext = createContext(plantStore);
+export const usePlantStore = () => useContext(PlantStoreContext);

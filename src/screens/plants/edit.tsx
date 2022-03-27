@@ -1,8 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useContext, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useState } from "react";
+import { DeviceEventEmitter } from "react-native";
 import { Button, TextInput, Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { PlantContext } from "../../context/plantContext";
+import { usePlantStore } from "../../context/plantContext";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 
@@ -20,11 +22,11 @@ const getId = (plants: Plant[]) => {
   return id;
 };
 
-const EditScreen = ({ navigation }: EditScreenProps) => {
+const EditScreen = observer(({ navigation }: EditScreenProps) => {
   const [name, setName] = useState<string>("");
   const [species, setSpecies] = useState<string>("");
 
-  const { plants, addNewPlant } = useContext(PlantContext);
+  const { plants, addNewPlant } = usePlantStore();
 
   const redirectOnSuccess = () => {
     return navigation.navigate("List");
@@ -38,6 +40,7 @@ const EditScreen = ({ navigation }: EditScreenProps) => {
     };
 
     addNewPlant(newPlant, redirectOnSuccess);
+    navigation.navigate("List");
   };
 
   return (
@@ -63,6 +66,6 @@ const EditScreen = ({ navigation }: EditScreenProps) => {
       </Button>
     </SafeAreaView>
   );
-};
+});
 
 export default EditScreen;

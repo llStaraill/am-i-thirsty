@@ -28,7 +28,6 @@ const dropDatabase = async () => {
 const setupDatabase = async () => {
   // create table if not exists
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(id integer primary key not null, name text, species text);`;
-  console.log(`Setting up the ${tableName} db`);
 
   return new Promise((resolve, reject) => {
     db.transaction(
@@ -47,13 +46,13 @@ const setupDatabase = async () => {
   });
 };
 
-const getPlants = (
-  setPlants: React.Dispatch<React.SetStateAction<Plant[]>>
-) => {
+const getPlants = async (setPlants: (plants: Plant[]) => void) => {
   const query = `SELECT * from ${tableName}`;
   db.transaction(
     (tx) => {
-      tx.executeSql(query, [], (_, { rows: { _array } }) => setPlants(_array));
+      tx.executeSql(query, [], (_, { rows: { _array } }) => {
+        setPlants(_array);
+      });
     },
     (error: SQLError) => {
       console.log("db error creating tables");
@@ -86,10 +85,30 @@ const deletePlant = (id: string) => {
   });
 };
 
+const getPlantById = (id: number, setPlants: (plants: Plant) => void) => {
+  const query = `SELECT * from ${tableName} where id = ${id}`;
+
+  db.transaction(
+    (tx) => {
+      tx.executeSql(query, [], (_, { rows: { _array } }) => {
+        setPlants(_array[0]);
+      });
+    },
+    (error: SQLError) => {
+      console.log("db error creating tables");
+      console.log(error);
+    },
+    () => {
+      console.log("Loaded all plants");
+    }
+  );
+};
+
 export const database = {
   getPlants,
   insertPlant,
   deletePlant,
   setupDatabase,
   dropDatabase,
+  getPlantById,
 };

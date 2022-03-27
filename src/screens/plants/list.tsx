@@ -1,30 +1,29 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { FAB, List, Portal, Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { PlantContext } from "../../context/plantContext";
+import { usePlantStore } from "../../context/plantContext";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 
 type ListScreenProps = NativeStackScreenProps<PlantStackNavigatorProps, "List">;
 
-const ListScreen = ({ navigation }: ListScreenProps) => {
-  const { plants } = useContext(PlantContext);
-  const [tick, setTick] = useState(0);
-
-  useEffect(() => setTick(tick + 1), [navigation]);
+const ListScreen = observer(({ navigation }: ListScreenProps) => {
+  const { plants } = usePlantStore();
 
   return (
     <SafeAreaView>
-      <ScrollView key={tick}>
+      <ScrollView>
         <Title>I am a List</Title>
         <List.Section>
           {plants.map(({ id, name, species }) => (
             <List.Item
+              onPress={() => navigation.navigate("Detail", { id })}
               key={id}
-              title={`#${id} - ${name}`}
+              title={`#${id} - ${name} (Art: ${species})`}
               left={() => <List.Icon icon="flower" />}
             />
           ))}
@@ -39,6 +38,6 @@ const ListScreen = ({ navigation }: ListScreenProps) => {
       </Portal>
     </SafeAreaView>
   );
-};
+});
 
 export default ListScreen;

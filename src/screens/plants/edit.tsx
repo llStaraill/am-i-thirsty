@@ -1,14 +1,22 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
-import { DeviceEventEmitter } from "react-native";
-import { Button, TextInput, Title } from "react-native-paper";
+import { View, Image } from "react-native";
+import {
+  Button,
+  IconButton,
+  Surface,
+  TextInput,
+  Title,
+} from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import PlantHeader from "../../components/layout/plantHeader";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { usePlantStore } from "../../context/plantContext";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 import { editScreenStyling } from "../../styles/screens.ts";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { ImagePicker } from "../../components";
 
 export type EditScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -30,6 +38,7 @@ const getId = (plants: Plant[]) => {
 const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
   const [name, setName] = useState<string>("");
   const [species, setSpecies] = useState<string>("");
+  const [photo, setPhoto] = useState<any>(null);
 
   const { plants, addNewPlant } = usePlantStore();
 
@@ -63,6 +72,9 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
         value={species}
         onChangeText={(text) => setSpecies(text)}
       ></TextInput>
+
+      <ImagePicker />
+
       <Button
         mode="contained"
         disabled={name === "" && species === ""}

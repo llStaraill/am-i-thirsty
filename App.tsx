@@ -30,10 +30,8 @@ export default function App() {
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
         <NavigationContainer>
-          {/* <PlantContextProvider> */}
           <RootNavigator />
           <StatusBar />
-          {/* </PlantContextProvider> */}
         </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>

@@ -1,0 +1,53 @@
+.imagePicker {
+  display: flex;
+  justify-items: center;
+  margin-bottom: 20px;
+}
+
+.imagePicker__image {
+  justify-self: center;
+  background-color: rgb(226, 226, 226);
+  width: 300px;
+  height: auto;
+  padding-top: 225px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.imagePicker__image__button {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  position: absolute;
+  bottom: 0px;
+  right: 20px;
+  display: flex;
+  background-color: turquoise;
+}
+
+.imagePicker__modal {
+  background-color: #fff;
+  max-width: 100%;
+  margin: 20px;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.imagePicker__modal__headline {
+  font-size: 20px;
+  text-align: center;
+  color: teal;
+}
+
+.imagePicker__modal__subline {
+  font-size: 14px;
+  text-align: center;
+  color: teal;
+}
+
+.imagePicker__modal__content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 0 20px;
+}

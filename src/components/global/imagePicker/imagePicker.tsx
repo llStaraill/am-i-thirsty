@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  ImageBackground,
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { View, Text, TouchableOpacity, ImageBackground } from "react-native";
 import { IconButton, Modal, Portal, Title } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
+import style from "./imagePicker.module.css";
 
 interface ImagePickerComponentProps {
   uri?: string;
@@ -62,53 +57,56 @@ const ImagePickerComponent = ({ uri }: ImagePickerComponentProps) => {
 
   return (
     <>
-      <View>
+      <View style={style.imagePicker}>
         {image ? (
           <>
-            <Image
-              style={{ width: 200, height: 200, borderRadius: 100 }}
+            <ImageBackground
+              resizeMode="cover"
+              style={style.imagePicker__image}
               source={{
                 uri: image,
               }}
             />
             <TouchableOpacity onPress={() => handleDeleteClicked()}>
-              <Icon name="close" size={40} color={"gray"} />
+              <Icon
+                style={style.imagePicker__image__button}
+                name="close"
+                size={60}
+                color={"gray"}
+              />
             </TouchableOpacity>
           </>
         ) : (
-          <TouchableOpacity onPress={() => setVisible(true)}>
-            <Icon name="plus" size={40} color={"gray"} />
-          </TouchableOpacity>
+          <>
+            <View style={style.imagePicker__image} />
+            <TouchableOpacity
+              style={style.imagePicker__image__button}
+              onPress={() => setVisible(true)}
+            >
+              <Icon name="plus" size={60} color={"gray"} />
+            </TouchableOpacity>
+          </>
         )}
       </View>
       <Portal>
         <Modal visible={visible} onDismiss={() => setVisible(false)}>
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 20,
-              margin: 25,
-              borderRadius: 50,
-            }}
-          >
-            <Title style={{ textAlign: "center" }}>Upload an image</Title>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
-            >
+          <View style={style.imagePicker__modal}>
+            <Title style={style.imagePicker__modal__headline}>
+              Upload an image
+            </Title>
+            <Text style={style.imagePicker__modal__subline}>
+              Lorem ipsum dolor
+            </Text>
+            <View style={style.imagePicker__modal__content}>
               <IconButton
-                style={{ flexBasis: 50 }}
                 icon="camera"
-                size={40}
+                size={60}
                 color={"#00897b"}
                 onPress={() => handleImageFromCamera()}
               />
               <IconButton
-                style={{ flexBasis: 50 }}
                 icon="image-album"
-                size={40}
+                size={60}
                 color={"#00897b"}
                 onPress={() => handleImageFromDevice()}
               />

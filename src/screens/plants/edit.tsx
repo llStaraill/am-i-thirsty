@@ -17,6 +17,7 @@ import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 import { editScreenStyling } from "../../styles/screens.ts";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { ImagePicker } from "../../components";
+import { ScrollView } from "react-native-gesture-handler";
 
 export type EditScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -59,29 +60,31 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
 
   return (
     <SafeAreaView style={editScreenStyling.containerWrapper}>
-      <Title>Edit Plant</Title>
-      <TextInput
-        label="Name"
-        autoComplete={false}
-        value={name}
-        onChangeText={(text) => setName(text)}
-      ></TextInput>
-      <TextInput
-        label="Species"
-        autoComplete={false}
-        value={species}
-        onChangeText={(text) => setSpecies(text)}
-      ></TextInput>
+      <ScrollView>
+        <Title>Edit Plant</Title>
+        <TextInput
+          label="Name"
+          autoComplete={false}
+          value={name}
+          onChangeText={(text) => setName(text)}
+        ></TextInput>
+        <TextInput
+          label="Species"
+          autoComplete={false}
+          value={species}
+          onChangeText={(text) => setSpecies(text)}
+        ></TextInput>
 
-      <ImagePicker />
+        <ImagePicker />
 
-      <Button
-        mode="contained"
-        disabled={name === "" && species === ""}
-        onPress={() => handlePlantSave()}
-      >
-        Save
-      </Button>
+        <Button
+          mode="contained"
+          disabled={name === "" && species === ""}
+          onPress={() => handlePlantSave()}
+        >
+          Save
+        </Button>
+      </ScrollView>
     </SafeAreaView>
   );
 });

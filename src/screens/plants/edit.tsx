@@ -1,39 +1,40 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
-import { View, Image } from "react-native";
-import {
-  Button,
-  IconButton,
-  Surface,
-  TextInput,
-  Title,
-} from "react-native-paper";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { ScrollView } from "react-native-gesture-handler";
+import { Button, TextInput, Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { observer } from "mobx-react-lite";
 import { usePlantStore } from "../../context/plantContext";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 import { editScreenStyling } from "../../styles/screens.ts";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { ImagePicker } from "../../components";
-import { ScrollView } from "react-native-gesture-handler";
+
+import { getId } from "../../lib/helper";
+import { PlantAction } from "../../types/reducer";
 
 export type EditScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
   "Edit"
 >;
 
-const getId = (plants: Plant[]) => {
-  let id = 0;
-  if (plants.length > 0) {
-    id =
-      plants.reduce((acc, cur) => {
-        if (cur.id > acc.id) return cur;
-        return acc;
-      }).id + 1;
+interface PlantState {
+  name: string;
+  species: string;
+  image: unknown;
+}
+
+const plantReducer = (state: PlantState, action: PlantAction) => {
+  switch (action.type) {
+    case "EDIT_NAME":
+      return { ...state, ...{ name: action.name } };
+    case "EDIT_SPECIES":
+      return { ...state, ...{ species: action.species } };
+    case "EDIT_IMAGE":
+      return { ...state, ...{ image: action.image } };
+    default:
+      return console.log("Action not implemented yet");
   }
-  return id;
 };
 
 const EditScreen = observer(({ route, navigation }: EditScreenProps) => {

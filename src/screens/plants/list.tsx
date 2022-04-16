@@ -2,6 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import {Image} from 'react-native';
 import { FAB, List, Portal, Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -16,12 +17,13 @@ export type ListScreenProps = NativeStackScreenProps<
 
 const ListScreen = observer(({ navigation }: ListScreenProps) => {
   const { plants } = usePlantStore();
+  console.log({plants})
 
   return (
     <SafeAreaView style={{ flex: 1, ...listScreenStyling.containerWrapper }}>
       <ScrollView>
         <Title>I am a List</Title>
-        <List.Section>
+      <List.Section>
           {plants.map(({ id, name, species }) => (
             <List.Item
               onPress={() => navigation.navigate("Detail", { id })}

@@ -6,10 +6,11 @@ import * as ImagePicker from "expo-image-picker";
 import style from "./imagePicker.module.css";
 
 interface ImagePickerComponentProps {
-  uri?: string;
+  uri: string | null;
+  setPlantPhoto: (imageUri: any) => void;
 }
 
-const ImagePickerComponent = ({ uri }: ImagePickerComponentProps) => {
+const ImagePickerComponent = ({ uri, setPlantPhoto }: ImagePickerComponentProps) => {
   const [visible, setVisible] = useState(false);
   const [image, setImage] = useState<string | null>(null);
 
@@ -23,14 +24,14 @@ const ImagePickerComponent = ({ uri }: ImagePickerComponentProps) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1,1],
       quality: 1,
     });
 
-    console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
+      setPlantPhoto(result.uri)
     }
     setVisible(false);
   };
@@ -39,14 +40,14 @@ const ImagePickerComponent = ({ uri }: ImagePickerComponentProps) => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1,1],
       quality: 1,
     });
 
-    console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
+      setPlantPhoto(result.uri)
     }
     setVisible(false);
   };

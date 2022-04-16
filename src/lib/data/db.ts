@@ -27,7 +27,7 @@ const dropDatabase = async () => {
 
 const setupDatabase = async () => {
   // create table if not exists
-  const query = `CREATE TABLE IF NOT EXISTS ${tableName}(id integer primary key not null, name text, species text);`;
+  const query = `CREATE TABLE IF NOT EXISTS ${tableName}(id integer primary key not null, name text, species text, image text);`;
 
   return new Promise((resolve, reject) => {
     db.transaction(
@@ -65,10 +65,10 @@ const getPlants = async (setPlants: (plants: Plant[]) => void) => {
 };
 
 const insertPlant = (plant: Plant, successCallback: () => void) => {
-  const query = `INSERT into ${tableName} (id, name, species) values (?,?,?)`;
+  const query = `INSERT into ${tableName} (id, name, species, image) values (?,?,?,?)`;
   db.transaction(
     (tx) => {
-      tx.executeSql(query, [plant.id, plant.name, plant.species]);
+      tx.executeSql(query, [plant.id, plant.name, plant.species, plant.image]);
     },
     (error: SQLError) => {
       console.log("Failed to insert new Plant");

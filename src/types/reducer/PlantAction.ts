@@ -20,9 +20,9 @@ interface SET_FAVORITE {
   favorited: boolean;
 }
 
-interface SET_LIGHT_NEED {
-  type: "SET_LIGHT_NEED";
-  need: "LOW" | "SHADE" | "FULL";
+interface EDIT_LIGHT_NEED {
+  type: "EDIT_LIGHT_NEED";
+  lightNeed: "LOW" | "SHADE" | "FULL";
 }
 
 interface EDIT_DESCRIPTION {
@@ -40,9 +40,9 @@ interface EDIT_TOXICITY {
   toxicity: "NON_TOXIC" | "TOXIC_TO_PETS" | "TOXIC_TO_HUMAN";
 }
 
-interface EDIT_WATER_NEEDS {
-  type: "EDIT_WATER_NEEDS";
-  waterNeeds: number; // Handle in days -> calculate in FE for Weeks / Months
+interface EDIT_WATER_FREQUENCY {
+  type: "EDIT_WATER_FREQUENCY";
+  waterFrequency: number; // Handle in days -> calculate in FE for Weeks / Months
 }
 
 interface ADD_LOGS {
@@ -55,8 +55,8 @@ export type PlantAction =
   | EDIT_IMAGE
   | ADD_LOGS
   | SET_FAVORITE
-  | SET_LIGHT_NEED
+  | EDIT_LIGHT_NEED
   | EDIT_DESCRIPTION
   | EDIT_LOCATION
   | EDIT_TOXICITY
-  | EDIT_WATER_NEEDS;
+  | EDIT_WATER_FREQUENCY;

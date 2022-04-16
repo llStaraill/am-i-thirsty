@@ -1,5 +1,9 @@
 export type Plant = {
-  id: number;
-  name: string;
-  species: string;
+  id: number | null;
+  name: string | null;
+  species: string | null;
+  image: string | null;
+  lightNeed: 'LOW' | 'SHADE' | 'FULL';
+  waterFrequency: number;
+
 };

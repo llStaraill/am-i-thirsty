@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ScrollView } from "react-native-gesture-handler";
-import { Button, TextInput, Title } from "react-native-paper";
+import { Button, RadioButton, TextInput, Title , Text} from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { observer } from "mobx-react-lite";
 import { usePlantStore } from "../../context/plantContext";
@@ -12,19 +12,16 @@ import { ImagePicker } from "../../components";
 
 import { getId } from "../../lib/helper";
 import { PlantAction } from "../../types/reducer";
+import { View } from "react-native";
 
 export type EditScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
   "Edit"
 >;
 
-interface PlantState {
-  name: string;
-  species: string;
-  image: unknown;
-}
 
-const plantReducer = (state: PlantState, action: PlantAction) => {
+
+const plantReducer = (state: Plant, action: PlantAction): Plant  => {
   switch (action.type) {
     case "EDIT_NAME":
       return { ...state, ...{ name: action.name } };
@@ -33,14 +30,26 @@ const plantReducer = (state: PlantState, action: PlantAction) => {
     case "EDIT_IMAGE":
       return { ...state, ...{ image: action.image } };
     default:
-      return console.log("Action not implemented yet");
+     console.log("Action not implemented yet");
+     return {...state}
   }
 };
 
+const initialState: Plant = {
+  id: null,
+  name: null,
+  species: null,
+  image: null,
+  waterFrequency: 7,
+  lightNeed: 'SHADE',
+  
+}
+
+
 const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
-  const [name, setName] = useState<string>("");
-  const [species, setSpecies] = useState<string>("");
-  const [photo, setPhoto] = useState<any>(null);
+  
+  const [state, dispatch] = useReducer(plantReducer, initialState)
+
 
   const { plants, addNewPlant } = usePlantStore();
 
@@ -49,15 +58,28 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
   };
 
   const handlePlantSave = () => {
+    console.log("Image", state.image)
     const newPlant: Plant = {
-      id: getId(plants),
-      name,
-      species,
+    ...state,
+    id: getId(plants)
     };
 
     addNewPlant(newPlant, redirectOnSuccess);
     navigation.navigate("List");
   };
+
+  const getPhotoUri = (uri: string) => {
+    dispatch({type: 'EDIT_IMAGE', image: uri })
+  }
+
+
+  const handleLightNeeds = (radioValue: string) => {
+    const value = radioValue as "LOW" | "SHADE" | "FULL";
+    
+    dispatch({type:'EDIT_LIGHT_NEED', lightNeed: value})
+  }
+
+ 
 
   return (
     <SafeAreaView style={editScreenStyling.containerWrapper}>
@@ -66,21 +88,35 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
         <TextInput
           label="Name"
           autoComplete={false}
-          value={name}
-          onChangeText={(text) => setName(text)}
+          value={state.name || ''} 
+          onChangeText={(text) => dispatch({type: "EDIT_NAME", name: text})}
         ></TextInput>
         <TextInput
           label="Species"
           autoComplete={false}
-          value={species}
-          onChangeText={(text) => setSpecies(text)}
+          value={state.species || ''}
+          onChangeText={(text) => dispatch({type:'EDIT_SPECIES', species: text})}
         ></TextInput>
 
-        <ImagePicker />
-
+        <ImagePicker uri={state.image}  setPlantPhoto={getPhotoUri}/>
+<View style={{flexDirection: 'row'}}>   
+<RadioButton.Group onValueChange={(newValue) => handleLightNeeds(newValue)} value={state.lightNeed}>
+      <View>
+        <Text>First</Text>
+        <RadioButton value={"LOW"}/>
+      </View>
+      <View>
+        <Text>Second</Text>
+        <RadioButton value="SHADE" />
+      </View>
+      <View>
+        <Text>Second</Text>
+        <RadioButton value="FULL" />
+      </View>
+    </RadioButton.Group></View>
         <Button
           mode="contained"
-          disabled={name === "" && species === ""}
+          disabled={!state.name || !state.species}
           onPress={() => handlePlantSave()}
         >
           Save

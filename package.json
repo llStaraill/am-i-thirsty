@@ -41,6 +41,7 @@
     "@types/react-native-vector-icons": "^6.4.10",
     "babel-plugin-react-native-classname-to-style": "^1.2.2",
     "babel-plugin-react-native-platform-specific-extensions": "^1.1.1",
+    "clsx": "^1.1.1",
     "i": "^0.3.7",
     "npm": "^8.5.5",
     "react-native-css-transformer": "^1.2.4",

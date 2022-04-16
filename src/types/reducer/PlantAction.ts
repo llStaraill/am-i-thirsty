@@ -37,7 +37,7 @@ interface EDIT_LOCATION {
 
 interface EDIT_TOXICITY {
   type: "EDIT_TOXICITY";
-  toxicity: "NON_TOXIC" | "TOXIC_TO_PETS" | "TOXIC_TO_HUMAN";
+  toxicity: "NON_TOXIC" | "TOXIC_TO_PETS" | "TOXIC_TO_HUMANS";
 }
 
 interface EDIT_WATER_FREQUENCY {

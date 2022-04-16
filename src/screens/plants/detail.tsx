@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, DeviceEventEmitter } from "react-native";
+import { SafeAreaView, DeviceEventEmitter, Image } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -38,7 +38,7 @@ const DetailScreen = ({ route, navigation }: DetailScreenProps) => {
   };
 
   const handlePlantDelete = () => {
-    if (plant) {
+    if (plant && plant.id) {
       deletePlant(plant.id, redirectOnSuccess);
     }
   };
@@ -56,6 +56,9 @@ const DetailScreen = ({ route, navigation }: DetailScreenProps) => {
           <ActivityIndicator animating={true} />
         ) : (
           <>
+            {plant.image && (
+              <Image source={{ uri: plant.image, width: 300, height: 300 }} />
+            )}
             <Text>{`The profile of the beautiful ${plant.name} a very handsome ${plant.species}`}</Text>
             <Portal>
               <Dialog visible={dialogVisibility}>

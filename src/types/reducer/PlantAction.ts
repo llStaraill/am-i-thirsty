@@ -1,3 +1,4 @@
+import { Plant } from "../../lib/data/model/plants";
 import { Log } from "../logs";
 
 interface EDIT_NAME {
@@ -49,6 +50,11 @@ interface ADD_LOGS {
   type: "ADD_LOGS";
   log: Log[];
 }
+
+interface RESET_FORM {
+  type: "RESET_FORM";
+  initialState: Plant
+}
 export type PlantAction =
   | EDIT_NAME
   | EDIT_SPECIES
@@ -59,4 +65,5 @@ export type PlantAction =
   | EDIT_DESCRIPTION
   | EDIT_LOCATION
   | EDIT_TOXICITY
-  | EDIT_WATER_FREQUENCY;
+  | EDIT_WATER_FREQUENCY
+  | RESET_FORM;

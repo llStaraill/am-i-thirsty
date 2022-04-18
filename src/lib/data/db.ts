@@ -4,6 +4,18 @@ import { Plant } from "./model/plants";
 
 const tableName = "plantData";
 
+//Columns
+const ID = "id";
+const NAME = "name";
+const SPECIES = "species";
+const IMAGE = "image";
+const LIGHT_NEED = "lightNeed";
+const TOXICITY = "toxicity";
+const WATER_FREQUENCY = "waterFrequency";
+const DESCRIPTION = "description";
+const LOCATION = "location";
+const LOGS = "logs";
+
 const db = SQLite.openDatabase("db.db");
 
 const dropDatabase = async () => {
@@ -16,7 +28,7 @@ const dropDatabase = async () => {
           resolve(result);
         },
         (_, error) => {
-          console.log("error dropping users table");
+          console.log(`Error dropping ${tableName} table`);
           reject(error);
           return false;
         }
@@ -27,7 +39,29 @@ const dropDatabase = async () => {
 
 const setupDatabase = async () => {
   // create table if not exists
-  const query = `CREATE TABLE IF NOT EXISTS ${tableName}(id integer primary key not null, name text, species text, image text);`;
+
+  /* const id = `id INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL `
+  const name = `name TEXT`
+  const species = `species TEXT`
+  const image = `image TEXT`
+  const lightNeed  = `lightNeed TEXT CHECK( lightNeed IN ('LOW','SHADE','FULL')) NOT NULL DEFAULT 'SHADE'`
+  const toxicity = `toxicity TEXT CHECK (toxicity in ('NON_TOXIC', 'TOXIC_TO_PETS', 'TOXIC_TO_HUMANS')) NOT NULL DEFAULT 'NON_TOXIC'`
+  const waterFrequency = `waterFrequency INTEGER`
+  const description = `description TEXT`
+  const location= `location TEXT`
+  const logs = `logs BLOB` */
+
+  //const query = `CREATE TABLE IF NOT EXISTS ${tableName}(${id}, ${name}, ${species}, ${image}, ${waterFrequency}, ${lightNeed});`;
+
+  const query =
+    `CREATE TABLE IF NOT EXISTS ${tableName}` +
+    "(" +
+    `${ID} INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,` +
+    `${NAME} TEXT NOT NULL,` +
+    `${SPECIES} TEXT NOT NULL,` +
+    `${IMAGE} TEXT,` +
+    `${DESCRIPTION} TEXT` +
+    ")";
 
   return new Promise((resolve, reject) => {
     db.transaction(
@@ -65,10 +99,16 @@ const getPlants = async (setPlants: (plants: Plant[]) => void) => {
 };
 
 const insertPlant = (plant: Plant, successCallback: () => void) => {
-  const query = `INSERT into ${tableName} (id, name, species, image) values (?,?,?,?)`;
+  const query = `INSERT into ${tableName} (${ID}, ${NAME}, ${SPECIES}, ${IMAGE}, ${DESCRIPTION}) values (?,?,?,?,?)`;
   db.transaction(
     (tx) => {
-      tx.executeSql(query, [plant.id, plant.name, plant.species, plant.image]);
+      tx.executeSql(query, [
+        plant.id,
+        plant.name,
+        plant.species,
+        plant.image,
+        plant.description,
+      ]);
     },
     (error: SQLError) => {
       console.log("Failed to insert new Plant");

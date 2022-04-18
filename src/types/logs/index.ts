@@ -1,6 +1,6 @@
 import { PlantAction } from "../reducer";
 
-enum LogType {
+export enum LogType {
   WATERED = "WATERED",
   REPOTTED = "REPOTTED",
   OBTAINED = "OBTAINED",

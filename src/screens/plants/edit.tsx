@@ -1,14 +1,12 @@
 import React, { useReducer, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ScrollView } from "react-native-gesture-handler";
-
+import NumericInput from "react-native-numeric-input";
 import {
   Button,
   RadioButton,
   TextInput,
   Title,
-  Text,
-  Portal,
   Divider,
 } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,6 +20,7 @@ import { ImagePicker } from "../../components";
 import { getId } from "../../lib/helper";
 import { PlantAction } from "../../types/reducer";
 import { View } from "react-native";
+import { Log, LogType } from "../../types/logs";
 
 export type EditScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -42,6 +41,12 @@ const plantReducer = (state: Plant, action: PlantAction): Plant => {
       return { ...state, lightNeed: action.lightNeed };
     case "EDIT_TOXICITY":
       return { ...state, toxicity: action.toxicity };
+    case "EDIT_LOCATION":
+      return { ...state, location: action.location };
+    case "EDIT_WATER_FREQUENCY":
+      return { ...state, waterFrequency: action.waterFrequency };
+    case "RESET_FORM":
+      return { ...initialState };
     default:
       console.log("Action not implemented yet");
       return { ...state };
@@ -49,14 +54,16 @@ const plantReducer = (state: Plant, action: PlantAction): Plant => {
 };
 
 const initialState: Plant = {
-  id: null,
-  name: null,
-  species: null,
-  image: null,
+  id: 0,
+  name: "",
+  species: "",
+  image: "",
   waterFrequency: 7,
   lightNeed: "SHADE",
   toxicity: "NON_TOXIC",
   description: "",
+  location: "",
+  logs: [],
 };
 
 const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
@@ -70,10 +77,18 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
 
   const handlePlantSave = () => {
     console.log("Image", state.image);
+    const log: Log = {
+      type: LogType.OBTAINED,
+      date: new Date(),
+      message: `${state.name} (${state.species} has been created)`,
+    };
+
     const newPlant: Plant = {
       ...state,
       id: getId(plants),
     };
+
+    newPlant.logs.push(log);
 
     addNewPlant(newPlant, redirectOnSuccess);
     navigation.navigate("List");
@@ -114,7 +129,7 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
           autoComplete={false}
           value={state.name || ""}
           onChangeText={(text) => dispatch({ type: "EDIT_NAME", name: text })}
-        ></TextInput>
+        />
 
         <TextInput
           label="Species"
@@ -123,7 +138,7 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
           onChangeText={(text) =>
             dispatch({ type: "EDIT_SPECIES", species: text })
           }
-        ></TextInput>
+        />
         <View style={{ flexDirection: "row" }}>
           <View style={{ flexBasis: "50%", borderRightWidth: 1 }}>
             <RadioButton.Group
@@ -148,6 +163,11 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
             </RadioButton.Group>
           </View>
         </View>
+        <NumericInput
+          onChange={(number) =>
+            dispatch({ type: "EDIT_WATER_FREQUENCY", waterFrequency: number })
+          }
+        />
         <Divider />
         <TextInput
           style={{ minHeight: 150 }}
@@ -158,15 +178,38 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
           onChangeText={(text) =>
             dispatch({ type: "EDIT_DESCRIPTION", description: text })
           }
-        ></TextInput>
-        <Button
-          style={{ marginVertical: 20 }}
-          mode="contained"
-          disabled={!state.name || !state.species}
-          onPress={() => handlePlantSave()}
+        />
+        <TextInput
+          label="Location"
+          autoComplete={true}
+          value={state.location || ""}
+          onChangeText={(text) =>
+            dispatch({ type: "EDIT_SPECIES", species: text })
+          }
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            marginVertical: 20,
+            width: "100%",
+          }}
         >
-          Save
-        </Button>
+          <Button
+            style={{ flexBasis: "30%" }}
+            mode="outlined"
+            onPress={() => handlePlantSave()}
+          >
+            Reset
+          </Button>
+          <Button
+            style={{ flexBasis: "70%", marginLeft: 5 }}
+            mode="contained"
+            disabled={!state.name || !state.species}
+            onPress={() => handlePlantSave()}
+          >
+            Save
+          </Button>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

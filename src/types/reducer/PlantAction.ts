@@ -1,4 +1,4 @@
-import { Plant } from "../../lib/data/model/plants";
+import { Plant, Toxicity } from "../../lib/data/model/plants";
 import { Log } from "../logs";
 
 interface EDIT_NAME {
@@ -38,7 +38,7 @@ interface EDIT_LOCATION {
 
 interface EDIT_TOXICITY {
   type: "EDIT_TOXICITY";
-  toxicity: "NON_TOXIC" | "TOXIC_TO_PETS" | "TOXIC_TO_HUMANS";
+  toxicity: Toxicity;
 }
 
 interface EDIT_WATER_FREQUENCY {
@@ -51,9 +51,19 @@ interface ADD_LOGS {
   log: Log[];
 }
 
+interface EDIT_TOXICITY_PETS {
+  type: "EDIT_TOXICITY_PETS";
+  toxicity: boolean;
+}
+
+interface EDIT_TOXICITY_HUMANS {
+  type: "EDIT_TOXICITY_HUMANS";
+  toxicity: boolean;
+}
+
 interface RESET_FORM {
   type: "RESET_FORM";
-  initialState: Plant
+  initialState: Plant;
 }
 export type PlantAction =
   | EDIT_NAME
@@ -66,4 +76,6 @@ export type PlantAction =
   | EDIT_LOCATION
   | EDIT_TOXICITY
   | EDIT_WATER_FREQUENCY
+  | EDIT_TOXICITY_PETS
+  | EDIT_TOXICITY_HUMANS
   | RESET_FORM;

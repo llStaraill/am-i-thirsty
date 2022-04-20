@@ -8,11 +8,14 @@ import {
   TextInput,
   Title,
   Divider,
+  Chip,
+  Switch,
 } from "react-native-paper";
+import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { observer } from "mobx-react-lite";
 import { usePlantStore } from "../../context/plantContext";
-import { Plant } from "../../lib/data/model/plants";
+import { Plant, Toxicity } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
 import { editScreenStyling } from "../../styles/screens.ts";
 import { ImagePicker } from "../../components";
@@ -39,8 +42,16 @@ const plantReducer = (state: Plant, action: PlantAction): Plant => {
       return { ...state, description: action.description };
     case "EDIT_LIGHT_NEED":
       return { ...state, lightNeed: action.lightNeed };
-    case "EDIT_TOXICITY":
-      return { ...state, toxicity: action.toxicity };
+    case "EDIT_TOXICITY_PETS":
+      return {
+        ...state,
+        toxicity: { ...state.toxicity, pets: action.toxicity },
+      };
+    case "EDIT_TOXICITY_HUMANS":
+      return {
+        ...state,
+        toxicity: { ...state.toxicity, humans: action.toxicity },
+      };
     case "EDIT_LOCATION":
       return { ...state, location: action.location };
     case "EDIT_WATER_FREQUENCY":
@@ -60,7 +71,7 @@ const initialState: Plant = {
   image: "",
   waterFrequency: 7,
   lightNeed: "SHADE",
-  toxicity: "NON_TOXIC",
+  toxicity: { pets: false, humans: false },
   description: "",
   location: "",
   logs: [],
@@ -104,15 +115,6 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
     dispatch({ type: "EDIT_LIGHT_NEED", lightNeed: value });
   };
 
-  const handleToxicity = (radioValue: string) => {
-    const value = radioValue as
-      | "NON_TOXIC"
-      | "TOXIC_TO_PETS"
-      | "TOXIC_TO_HUMANS";
-
-    dispatch({ type: "EDIT_TOXICITY", toxicity: value });
-  };
-
   return (
     <SafeAreaView
       style={{
@@ -152,15 +154,55 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
             </RadioButton.Group>
           </View>
           <View style={{ flexBasis: "50%" }}>
-            <RadioButton.Group
-              key="Toxicity"
-              onValueChange={(newValue) => handleToxicity(newValue)}
-              value={state.toxicity}
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                alignContent: "center",
+                justifyContent: "center",
+              }}
             >
-              <RadioButton.Item label="Non Toxic" value="NON_TOXIC" />
-              <RadioButton.Item label="Toxic to pets" value="TOXIC_TO_PETS" />
-              <RadioButton.Item label="Toxic" value="TOXIC_TO_HUMANS" />
-            </RadioButton.Group>
+              <Text
+                style={{
+                  flexBasis: "50%",
+                  justifyContent: "center",
+                  alignSelf: "center",
+                }}
+              >
+                Toxic to pets
+              </Text>
+              <Switch
+                value={state.toxicity.pets}
+                onValueChange={(value) =>
+                  dispatch({ type: "EDIT_TOXICITY_PETS", toxicity: value })
+                }
+              />
+            </View>
+            <Divider />
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                alignContent: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  flexBasis: "50%",
+                  justifyContent: "center",
+                  alignSelf: "center",
+                }}
+              >
+                Toxic to Humans
+              </Text>
+              <Switch
+                value={state.toxicity.humans}
+                onValueChange={(value) =>
+                  dispatch({ type: "EDIT_TOXICITY_HUMANS", toxicity: value })
+                }
+              />
+            </View>
           </View>
         </View>
         <NumericInput

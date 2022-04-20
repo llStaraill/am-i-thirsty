@@ -56,10 +56,14 @@ const setupDatabase = async () => {
   const query =
     `CREATE TABLE IF NOT EXISTS ${tableName}` +
     "(" +
-    `${ID} INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,` +
-    `${NAME} TEXT NOT NULL,` +
-    `${SPECIES} TEXT NOT NULL,` +
-    `${IMAGE} TEXT,` +
+    `${ID} INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL` +
+    "," +
+    `${NAME} TEXT NOT NULL` +
+    "," +
+    `${SPECIES} TEXT NOT NULL` +
+    "," +
+    `${IMAGE} TEXT` +
+    "," +
     `${DESCRIPTION} TEXT` +
     ")";
 

@@ -1,0 +1,25 @@
+@import '../../styles/variables';
+
+.section {
+    padding: $spacer;
+    margin: $spacer;
+
+    text-align: center;
+   
+    
+ 
+    
+}
+
+.subheading {
+    text-align: right;
+    font-weight: bold;
+    color: $primary;
+}
+
+.subheadingContainer {
+    border-color: $primary;
+    border-bottom-width: 1;
+    margin-bottom: $spacer;
+}
+

@@ -56,7 +56,7 @@ const DetailScreen = ({ route, navigation }: DetailScreenProps) => {
           <ActivityIndicator animating={true} />
         ) : (
           <>
-            {plant.image && (
+            {plant.image && plant.image !== "" && (
               <Image source={{ uri: plant.image, width: 300, height: 300 }} />
             )}
             <Text>{`The profile of the beautiful ${plant.name} a very handsome ${plant.species}`}</Text>

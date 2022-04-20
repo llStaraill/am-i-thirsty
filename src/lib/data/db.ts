@@ -67,6 +67,14 @@ const setupDatabase = async () => {
     `${DESCRIPTION} TEXT` +
     "," +
     `${TOXICITY} BLOB` +
+    "," +
+    `${LIGHT_NEED} TEXT CHECK (${LIGHT_NEED} IN ('LOW', 'SHADE', 'FULL'))` +
+    "," +
+    `${WATER_FREQUENCY} INTEGER` +
+    "," +
+    `${LOCATION} TEXT` +
+    "," +
+    `${LOGS} BLOB` +
     ")";
 
   return new Promise((resolve, reject) => {
@@ -105,7 +113,7 @@ const getPlants = async (setPlants: (plants: Plant[]) => void) => {
 };
 
 const insertPlant = (plant: Plant, successCallback: () => void) => {
-  const query = `INSERT into ${tableName} (${ID}, ${NAME}, ${SPECIES}, ${IMAGE}, ${DESCRIPTION}, ${TOXICITY}) values (?,?,?,?,?,?)`;
+  const query = `INSERT into ${tableName} (${ID}, ${NAME}, ${SPECIES}, ${IMAGE}, ${DESCRIPTION}, ${TOXICITY}, ${LIGHT_NEED}, ${WATER_FREQUENCY}, ${LOCATION}, ${LOGS}) values (?,?,?,?,?,?,?,?,?,?)`;
   db.transaction(
     (tx) => {
       tx.executeSql(query, [
@@ -115,6 +123,10 @@ const insertPlant = (plant: Plant, successCallback: () => void) => {
         plant.image,
         plant.description,
         JSON.stringify(plant.toxicity),
+        plant.lightNeed,
+        plant.waterFrequency,
+        plant.location,
+        JSON.stringify(plant.logs),
       ]);
     },
     (error: SQLError) => {

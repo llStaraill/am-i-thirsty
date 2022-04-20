@@ -65,6 +65,8 @@ const setupDatabase = async () => {
     `${IMAGE} TEXT` +
     "," +
     `${DESCRIPTION} TEXT` +
+    "," +
+    `${TOXICITY} BLOB` +
     ")";
 
   return new Promise((resolve, reject) => {
@@ -103,7 +105,7 @@ const getPlants = async (setPlants: (plants: Plant[]) => void) => {
 };
 
 const insertPlant = (plant: Plant, successCallback: () => void) => {
-  const query = `INSERT into ${tableName} (${ID}, ${NAME}, ${SPECIES}, ${IMAGE}, ${DESCRIPTION}) values (?,?,?,?,?)`;
+  const query = `INSERT into ${tableName} (${ID}, ${NAME}, ${SPECIES}, ${IMAGE}, ${DESCRIPTION}, ${TOXICITY}) values (?,?,?,?,?,?)`;
   db.transaction(
     (tx) => {
       tx.executeSql(query, [
@@ -112,6 +114,7 @@ const insertPlant = (plant: Plant, successCallback: () => void) => {
         plant.species,
         plant.image,
         plant.description,
+        JSON.stringify(plant.toxicity),
       ]);
     },
     (error: SQLError) => {

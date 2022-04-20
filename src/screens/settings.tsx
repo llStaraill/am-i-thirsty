@@ -5,9 +5,6 @@ import { Divider, Paragraph, Subheading } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PlantHeader from "../components/layout/plantHeader";
 
-import { RootTabNavigatorProps } from "../navigators/rootNavigator";
-import { settingScreenStyling } from "../styles/screens.ts";
-
 export type SettingScreenProps = NativeStackScreenProps<
   RootTabNavigatorProps,
   "Settings"
@@ -15,7 +12,7 @@ export type SettingScreenProps = NativeStackScreenProps<
 
 const SettingScreen = () => {
   return (
-    <SafeAreaView style={settingScreenStyling.containerWrapper}>
+    <SafeAreaView>
       <Subheading>Version</Subheading>
       <Paragraph>0.0.1</Paragraph>
       <Divider />

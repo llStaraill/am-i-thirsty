@@ -29,7 +29,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
-        <NavigationContainer>
+        <NavigationContainer >
           <RootNavigator />
           <StatusBar />
         </NavigationContainer>

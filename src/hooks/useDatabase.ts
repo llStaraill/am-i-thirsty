@@ -9,7 +9,7 @@ export default function useDatabase() {
   useEffect(() => {
     async function loadDataAsync() {
       try {
-        await database.dropDatabase();
+        //await database.dropDatabase();
         await database.setupDatabase();
         fetchPlants();
 

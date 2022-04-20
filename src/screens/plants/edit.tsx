@@ -8,22 +8,24 @@ import {
   TextInput,
   Title,
   Divider,
-  Chip,
   Switch,
+  Portal,
 } from "react-native-paper";
 import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { observer } from "mobx-react-lite";
 import { usePlantStore } from "../../context/plantContext";
-import { Plant, Toxicity } from "../../lib/data/model/plants";
+import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
-import { editScreenStyling } from "../../styles/screens.ts";
+
 import { ImagePicker } from "../../components";
 
 import { getId } from "../../lib/helper";
 import { PlantAction } from "../../types/reducer";
 import { View } from "react-native";
 import { Log, LogType } from "../../types/logs";
+
+import style from "./edit.scss";
 
 export type EditScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -116,13 +118,8 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: "white",
-        ...editScreenStyling.containerWrapper,
-      }}
-    >
-      <ScrollView>
+    <SafeAreaView>
+      <ScrollView style={style["editScreen__wrapper"]}>
         <Title>Edit Plant</Title>
 
         <ImagePicker uri={state.image} setPlantPhoto={getPhotoUri} />

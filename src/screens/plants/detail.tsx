@@ -9,12 +9,10 @@ import {
   Portal,
   Text,
 } from "react-native-paper";
-import PlantHeader from "../../components/layout/plantHeader";
 import { usePlantStore } from "../../context/plantContext";
 import { database } from "../../lib/data/db";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
-import { detailScreenStyling } from "../../styles/screens.ts";
 
 export type DetailScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -51,7 +49,7 @@ const DetailScreen = ({ route, navigation }: DetailScreenProps) => {
 
   return (
     <>
-      <SafeAreaView style={detailScreenStyling.containerWrapper}>
+      <SafeAreaView>
         {!plant || loading ? (
           <ActivityIndicator animating={true} />
         ) : (

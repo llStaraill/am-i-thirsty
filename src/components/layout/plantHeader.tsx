@@ -1,4 +1,5 @@
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import { RootStackNavigatorProps } from "navigators/rootNavigator";
 import React from "react";
 import { DeviceEventEmitter, EventEmitter } from "react-native";
 import { Appbar } from "react-native-paper";
@@ -8,8 +9,8 @@ import { EditScreenProps } from "../../screens/plants/edit";
 import { ListScreenProps } from "../../screens/plants/list";
 import { SettingScreenProps } from "../../screens/settings";
 
-interface PlantHeaderProps<T> {
-  navigatorProps?: T;
+interface PlantHeaderProps {
+  navigatorProps?: any;
   title: string;
   subtitle?: string;
   showDelete?: boolean;
@@ -24,13 +25,7 @@ const PlantHeader = ({
   showEdit = false,
   hideBackAction = false,
   navigatorProps,
-}: PlantHeaderProps<
-  | DetailScreenProps
-  | PlantNavigatorProps
-  | EditScreenProps
-  | ListScreenProps
-  | SettingScreenProps
->) => {
+}: PlantHeaderProps) => {
   const handleDeleteClicked = () => {
     DeviceEventEmitter.emit("deleteIconClicked");
   };
@@ -41,7 +36,7 @@ const PlantHeader = ({
   return (
     <Appbar.Header>
       {!hideBackAction && navigatorProps && (
-        <Appbar.BackAction onPress={() => navigatorProps.navigation.goBack()} />
+        <Appbar.BackAction onPress={() => navigatorProps.goBack()} />
       )}
       <Appbar.Content title={title} subtitle={subtitle} />
       {showEdit && (

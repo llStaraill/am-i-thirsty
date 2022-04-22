@@ -6,7 +6,7 @@ import Container from "../components/global/container";
 import Section from "../components/global/section";
 import { RootStackNavigatorProps } from "../navigators/rootNavigator";
 
-import AppStyles from "../styles/global.scss";
+import globalStyles from "../styles/global.scss";
 
 export type SettingScreenProps = NativeStackScreenProps<
   RootStackNavigatorProps,
@@ -15,7 +15,7 @@ export type SettingScreenProps = NativeStackScreenProps<
 
 const SettingScreen = () => {
   return (
-    <ScrollView style={AppStyles.main}>
+    <ScrollView style={globalStyles.main}>
       <Section headline="About this app">
         <Paragraph>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam

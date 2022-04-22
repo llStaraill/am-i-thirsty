@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 
 import style from "./imagePicker.scss";
-import AppStyle from "../../../styles/global.scss";
+import globalStyle from "../../../styles/global.scss";
 
 interface ImagePickerComponentProps {
   uri: string | null;
@@ -95,10 +95,10 @@ const ImagePickerComponent = ({
       </View>
       <Portal>
         <Modal visible={visible} onDismiss={() => setVisible(false)}>
-          <View style={AppStyle["modal"]}>
+          <View style={globalStyle["modal"]}>
             <Title>Upload an image</Title>
             <Text>Lorem ipsum dolor</Text>
-            <View style={AppStyle["modal__content"]}>
+            <View style={globalStyle["modal__content"]}>
               <IconButton
                 icon="camera"
                 size={60}

@@ -25,7 +25,7 @@ import { PlantAction } from "../../types/reducer";
 import { View } from "react-native";
 import { Log, LogType } from "../../types/logs";
 
-import AppStyle from "../../styles/global.scss";
+import globalStyle from "../../styles/global.scss";
 import FormGroup from "../../components/global/form/formGroup";
 
 export type EditScreenProps = NativeStackScreenProps<
@@ -72,7 +72,7 @@ const initialState: Plant = {
   name: "",
   species: "",
   image: "",
-  waterFrequency: 7,
+  waterFrequency: 1,
   lightNeed: "SHADE",
   toxicity: { pets: false, humans: false },
   description: "",
@@ -120,7 +120,7 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
   };
 
   return (
-    <ScrollView style={AppStyle.main}>
+    <ScrollView style={globalStyle.main}>
       <Title>Add /Edit Plant</Title>
       <Paragraph>
         Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -165,6 +165,7 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
             <Subheading>Water Frequency *</Subheading>
             <NumericInput
               minValue={1}
+              value={state.waterFrequency}
               onChange={(number) =>
                 dispatch({
                   type: "EDIT_WATER_FREQUENCY",

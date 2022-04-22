@@ -9,10 +9,10 @@ import {
   Title,
   Divider,
   Switch,
-  Portal,
+  Subheading,
+  Paragraph,
 } from "react-native-paper";
 import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { observer } from "mobx-react-lite";
 import { usePlantStore } from "../../context/plantContext";
 import { Plant } from "../../lib/data/model/plants";
@@ -25,7 +25,8 @@ import { PlantAction } from "../../types/reducer";
 import { View } from "react-native";
 import { Log, LogType } from "../../types/logs";
 
-import style from "./edit.scss";
+import AppStyle from "../../styles/global.scss";
+import FormGroup from "../../components/global/form/formGroup";
 
 export type EditScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -76,6 +77,7 @@ const initialState: Plant = {
   toxicity: { pets: false, humans: false },
   description: "",
   location: "",
+  favorite: 0,
   logs: [],
 };
 
@@ -118,28 +120,35 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView style={style["editScreen__wrapper"]}>
-        <Title>Edit Plant</Title>
+    <ScrollView style={AppStyle.main}>
+      <Title>Add /Edit Plant</Title>
+      <Paragraph>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </Paragraph>
 
-        <ImagePicker uri={state.image} setPlantPhoto={getPhotoUri} />
+      <ImagePicker uri={state.image} setPlantPhoto={getPhotoUri} />
+      <FormGroup>
         <TextInput
-          label="Name"
+          label="Name *"
           autoComplete={false}
           value={state.name || ""}
           onChangeText={(text) => dispatch({ type: "EDIT_NAME", name: text })}
         />
+      </FormGroup>
 
+      <FormGroup>
         <TextInput
-          label="Species"
+          label="Species *"
           autoComplete={false}
           value={state.species || ""}
           onChangeText={(text) =>
             dispatch({ type: "EDIT_SPECIES", species: text })
           }
         />
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ flexBasis: "50%", borderRightWidth: 1 }}>
+      </FormGroup>
+      <View style={{ flexDirection: "row" }}>
+        <View style={{ flexBasis: "50%" }}>
+          <FormGroup>
             <RadioButton.Group
               key="Light"
               onValueChange={(newValue) => handleLightNeeds(newValue)}
@@ -149,8 +158,22 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
               <RadioButton.Item label="Shade" value="SHADE" />
               <RadioButton.Item label="Full sun" value="FULL" />
             </RadioButton.Group>
-          </View>
-          <View style={{ flexBasis: "50%" }}>
+          </FormGroup>
+        </View>
+        <View style={{ flexBasis: "50%" }}>
+          <FormGroup position="center">
+            <Subheading>Water Frequency *</Subheading>
+            <NumericInput
+              minValue={1}
+              onChange={(number) =>
+                dispatch({
+                  type: "EDIT_WATER_FREQUENCY",
+                  waterFrequency: number,
+                })
+              }
+            />
+          </FormGroup>
+          <FormGroup>
             <View
               style={{
                 flexDirection: "row",
@@ -200,17 +223,14 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
                 }
               />
             </View>
-          </View>
+          </FormGroup>
         </View>
-        <NumericInput
-          onChange={(number) =>
-            dispatch({ type: "EDIT_WATER_FREQUENCY", waterFrequency: number })
-          }
-        />
-        <Divider />
+      </View>
+
+      <FormGroup>
         <TextInput
-          style={{ minHeight: 150 }}
           label="Description"
+          numberOfLines={5}
           autoComplete={false}
           multiline
           value={state.description || ""}
@@ -218,6 +238,8 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
             dispatch({ type: "EDIT_DESCRIPTION", description: text })
           }
         />
+      </FormGroup>
+      <FormGroup>
         <TextInput
           label="Location"
           autoComplete={true}
@@ -226,31 +248,31 @@ const EditScreen = observer(({ route, navigation }: EditScreenProps) => {
             dispatch({ type: "EDIT_SPECIES", species: text })
           }
         />
-        <View
-          style={{
-            flexDirection: "row",
-            marginVertical: 20,
-            width: "100%",
-          }}
+      </FormGroup>
+      <View
+        style={{
+          flexDirection: "row",
+          marginVertical: 20,
+          width: "100%",
+        }}
+      >
+        <Button
+          style={{ flexBasis: "30%" }}
+          mode="outlined"
+          onPress={() => handlePlantSave()}
         >
-          <Button
-            style={{ flexBasis: "30%" }}
-            mode="outlined"
-            onPress={() => handlePlantSave()}
-          >
-            Reset
-          </Button>
-          <Button
-            style={{ flexBasis: "70%", marginLeft: 5 }}
-            mode="contained"
-            disabled={!state.name || !state.species}
-            onPress={() => handlePlantSave()}
-          >
-            Save
-          </Button>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+          Reset
+        </Button>
+        <Button
+          style={{ flexBasis: "70%", marginLeft: 5 }}
+          mode="contained"
+          disabled={!state.name || !state.species}
+          onPress={() => handlePlantSave()}
+        >
+          Save
+        </Button>
+      </View>
+    </ScrollView>
   );
 });
 

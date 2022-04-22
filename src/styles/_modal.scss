@@ -1,0 +1,15 @@
+.modal {
+  background-color: #fff;
+  height: 200px;
+  max-width: 100%;
+  margin: calc($spacer * 2) auto;
+  border-radius: $border-radius;
+  padding: calc($spacer * 2);
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 0 calc($spacer * 2);
+  }
+}

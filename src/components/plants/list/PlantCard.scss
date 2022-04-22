@@ -1,0 +1,32 @@
+@import "src/styles/variables";
+
+.plantCard {
+  flex-basis: 30%;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  position: relative;
+  margin: 0 auto calc($spacer * 2);
+
+  &--third {
+    margin-right: 0;
+  }
+
+  &__image {
+    justify-self: center;
+    background-color: rgb(226, 226, 226);
+    width: 100%;
+    height: auto;
+    padding-top: 100%;
+
+    overflow: hidden;
+    border-radius: $border-radius;
+  }
+
+  &__heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}

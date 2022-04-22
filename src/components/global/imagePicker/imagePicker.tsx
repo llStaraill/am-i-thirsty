@@ -4,6 +4,9 @@ import { IconButton, Modal, Portal, Title } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 
+import style from "./imagePicker.scss";
+import AppStyle from "../../../styles/global.scss";
+
 interface ImagePickerComponentProps {
   uri: string | null;
   setPlantPhoto: (imageUri: any) => void;
@@ -24,7 +27,7 @@ const ImagePickerComponent = ({
 
   const handleImageFromDevice = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -39,7 +42,7 @@ const ImagePickerComponent = ({
 
   const handleImageFromCamera = async () => {
     let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -58,34 +61,44 @@ const ImagePickerComponent = ({
 
   return (
     <>
-      <View>
+      <View style={style.imagePicker}>
         {image ? (
           <>
             <ImageBackground
-              resizeMode="cover"
+              style={style["imagePicker__image"]}
+              resizeMode="center"
               source={{
                 uri: image,
               }}
             />
-            <TouchableOpacity onPress={() => handleDeleteClicked()}>
-              <Icon name="close" size={60} color={"gray"} />
+            <TouchableOpacity
+              style={{
+                ...style["imagePicker__image__button"],
+                ...style["imagePicker__image__button--cancel"],
+              }}
+              onPress={() => handleDeleteClicked()}
+            >
+              <Icon name="close" size={40} color={"white"} />
             </TouchableOpacity>
           </>
         ) : (
           <>
-            <View />
-            <TouchableOpacity onPress={() => setVisible(true)}>
-              <Icon name="plus" size={60} color={"gray"} />
+            <View style={style["imagePicker__image"]} />
+            <TouchableOpacity
+              style={style["imagePicker__image__button"]}
+              onPress={() => setVisible(true)}
+            >
+              <Icon name="plus" size={40} color={"white"} />
             </TouchableOpacity>
           </>
         )}
       </View>
       <Portal>
         <Modal visible={visible} onDismiss={() => setVisible(false)}>
-          <View>
+          <View style={AppStyle["modal"]}>
             <Title>Upload an image</Title>
             <Text>Lorem ipsum dolor</Text>
-            <View>
+            <View style={AppStyle["modal__content"]}>
               <IconButton
                 icon="camera"
                 size={60}

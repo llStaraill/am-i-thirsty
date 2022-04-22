@@ -1,5 +1,6 @@
-.formGroup {
-    border: 1px solid red;
-    border-radius: 5px;
+@import "../../../styles/variables";
 
+.formGroup {
+  margin: $spacer 0;
+  display: flex;
 }

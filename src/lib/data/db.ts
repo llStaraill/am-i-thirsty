@@ -15,6 +15,7 @@ const WATER_FREQUENCY = "waterFrequency";
 const DESCRIPTION = "description";
 const LOCATION = "location";
 const LOGS = "logs";
+const FAVORITE = "favorite";
 
 const db = SQLite.openDatabase("db.db");
 
@@ -75,6 +76,8 @@ const setupDatabase = async () => {
     `${LOCATION} TEXT` +
     "," +
     `${LOGS} BLOB` +
+    "," +
+    `${FAVORITE} BOOLEAN DEFAULT FALSE` +
     ")";
 
   return new Promise((resolve, reject) => {
@@ -113,7 +116,7 @@ const getPlants = async (setPlants: (plants: Plant[]) => void) => {
 };
 
 const insertPlant = (plant: Plant, successCallback: () => void) => {
-  const query = `INSERT into ${tableName} (${ID}, ${NAME}, ${SPECIES}, ${IMAGE}, ${DESCRIPTION}, ${TOXICITY}, ${LIGHT_NEED}, ${WATER_FREQUENCY}, ${LOCATION}, ${LOGS}) values (?,?,?,?,?,?,?,?,?,?)`;
+  const query = `INSERT into ${tableName} (${ID}, ${NAME}, ${SPECIES}, ${IMAGE}, ${DESCRIPTION}, ${TOXICITY}, ${LIGHT_NEED}, ${WATER_FREQUENCY}, ${LOCATION}, ${LOGS}, ${FAVORITE}) values (?,?,?,?,?,?,?,?,?,?,?)`;
   db.transaction(
     (tx) => {
       tx.executeSql(query, [
@@ -127,6 +130,7 @@ const insertPlant = (plant: Plant, successCallback: () => void) => {
         plant.waterFrequency,
         plant.location,
         JSON.stringify(plant.logs),
+        plant.favorite,
       ]);
     },
     (error: SQLError) => {

@@ -10,6 +10,7 @@ export type Plant = {
   waterFrequency: number;
   description: string;
   location: string;
+  favorite: 0 | 1;
   logs: Log[];
 };
 

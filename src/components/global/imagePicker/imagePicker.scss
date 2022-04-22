@@ -1,0 +1,35 @@
+@import "src/styles/variables";
+
+.imagePicker {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: $spacer/2 0;
+
+  &__image {
+    justify-self: center;
+    background-color: rgb(226, 226, 226);
+    width: 100%;
+    height: auto;
+    padding-top: 100%;
+    margin: 0 auto calc($spacer * 2);
+    overflow: hidden;
+    border-radius: $border-radius;
+
+    &__button {
+      width: 40;
+      height: 40;
+      border-radius: 20px;
+      position: absolute;
+      bottom: 30px;
+      right: 10px;
+      display: flex;
+      background-color: turquoise;
+      color: white;
+
+      &--cancel {
+        background-color: gray;
+      }
+    }
+  }
+}

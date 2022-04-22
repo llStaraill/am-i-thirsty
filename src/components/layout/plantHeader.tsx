@@ -1,13 +1,6 @@
-import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { RootStackNavigatorProps } from "navigators/rootNavigator";
 import React from "react";
 import { DeviceEventEmitter, EventEmitter } from "react-native";
 import { Appbar } from "react-native-paper";
-import { PlantNavigatorProps } from "../../navigators/plantNavigator";
-import { DetailScreenProps } from "../../screens/plants/detail";
-import { EditScreenProps } from "../../screens/plants/edit";
-import { ListScreenProps } from "../../screens/plants/list";
-import { SettingScreenProps } from "../../screens/settings";
 
 interface PlantHeaderProps {
   navigatorProps?: any;

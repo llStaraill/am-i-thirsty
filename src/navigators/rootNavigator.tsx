@@ -32,8 +32,10 @@ const RootNavigator = () => {
                   ? "Settings"
                   : "99 little buds in the pot"
               }
-              hideBackAction={route.name === "List" ? true : false}
+              hideBackAction={route.name === "List"}
               navigatorProps={navigation}
+              showDelete={route.name === "Detail"}
+              showEdit={route.name === "Detail"}
             />
           ),
         })}

@@ -1,18 +1,25 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import Section from "../../components/global/section";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, DeviceEventEmitter, Image } from "react-native";
+import { SafeAreaView, DeviceEventEmitter, Image, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
   Dialog,
   Paragraph,
   Portal,
+  Subheading,
   Text,
+  Title,
 } from "react-native-paper";
 import { usePlantStore } from "../../context/plantContext";
 import { database } from "../../lib/data/db";
 import { Plant } from "../../lib/data/model/plants";
 import { PlantStackNavigatorProps } from "../../navigators/plantNavigator";
+
+import style from "./detail.scss";
+import globalStyle from "../../styles/global.scss";
+import ToxicityIndicator from "../../components/plants/detail/ToxicityIndicator";
 
 export type DetailScreenProps = NativeStackScreenProps<
   PlantStackNavigatorProps,
@@ -49,15 +56,33 @@ const DetailScreen = ({ route, navigation }: DetailScreenProps) => {
 
   return (
     <>
-      <SafeAreaView>
+      <View>
         {!plant || loading ? (
           <ActivityIndicator animating={true} />
         ) : (
           <>
-            {plant.image && plant.image !== "" && (
-              <Image source={{ uri: plant.image, width: 300, height: 300 }} />
-            )}
-            <Text>{`The profile of the beautiful ${plant.name} a very handsome ${plant.species}`}</Text>
+            <View>
+              {plant.image && plant.image !== "" && (
+                <Image
+                  style={style["detailScreen__cover"]}
+                  source={{ uri: plant.image, width: 300, height: 300 }}
+                />
+              )}
+              <View style={style["detailScreen__header"]}>
+                <Title style={style["detailScreen__header__title"]}>
+                  {plant.name}
+                </Title>
+                <Subheading style={style["detailScreen__header__subheading"]}>
+                  {plant.species}
+                </Subheading>
+              </View>
+            </View>
+            <View style={style["detailScreen__information"]}>
+              <ToxicityIndicator toxicity={plant.toxicity} />
+            </View>
+            <Section headline="Description">
+              <Text>{plant.description} I am a description</Text>
+            </Section>
             <Portal>
               <Dialog visible={dialogVisibility}>
                 <Dialog.Title>
@@ -76,7 +101,7 @@ const DetailScreen = ({ route, navigation }: DetailScreenProps) => {
             </Portal>
           </>
         )}
-      </SafeAreaView>
+      </View>
     </>
   );
 };
